@@ -1,0 +1,3 @@
+Hello {{username}}
+
+Welcome to instagram, thank you for joining our community.find exciting photos.
