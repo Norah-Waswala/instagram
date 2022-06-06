@@ -1,7 +1,11 @@
+from distutils.command.upload import upload
+from tkinter import CASCADE, image_names
 from django.db import models
-from django.db import models
+from django.urls import reverse
+
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+
+# from django.db.models.signals import Image_save
 from django.dispatch import receiver
 # Create your models here.
 
@@ -9,20 +13,18 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     profile_picture = models.ImageField(upload_to='images/', default='default.png')
     bio = models.TextField(max_length=500, default="My Bio", blank=True)
-    name = models.CharField(blank=True, max_length=120)
-    location = models.CharField(max_length=60, blank=True)
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user.name} Profile'
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
+    # @receiver(Image_save, sender=User)
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         Profile.objects.create(user=instance)
 
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+    # @receiver(Image_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.profile.save()
 
     def save_profile(self):
         self.user
@@ -34,21 +36,15 @@ class Profile(models.Model):
     def search_profile(cls, name):
         return cls.objects.filter(user__username__icontains=name).all()
 
-
-class Post(models.Model):
-    image = models.ImageField(upload_to='posts/')
-    name = models.CharField(max_length=250, blank=True)
-    caption = models.CharField(max_length=250, blank=True)
-    likes = models.ManyToManyField(User, related_name='likes', blank=True, )
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
-    created = models.DateTimeField(auto_now_add=True, null=True)
-
-    class Meta:
-        ordering = ["-pk"]
-
-    def get_absolute_url(self):
-        return f"/post/{self.id}"
-
+class Image(models.Model):
+    image=models.ImageField(upload_to='images/')
+    image_name=models.CharField(max_length=60, blank=True)
+    image_caption=models.CharField(max_length=60, blank=True)
+    image_likes = models.ManyToManyField(User, related_name='likes', blank=True, )
+    image_comments = models.ManyToManyField(User, related_name='comments', blank=True, )
+    profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
+   
+    
     @property
     def get_all_comments(self):
         return self.comments.all()
@@ -63,25 +59,43 @@ class Post(models.Model):
         return self.likes.count()
 
     def __str__(self):
-        return f'{self.user.name} Post'
-
-
-class Comment(models.Model):
-    comment = models.TextField()
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
-    created = models.DateTimeField(auto_now_add=True, null=True)
-
-    def __str__(self):
-        return f'{self.user.name} Post'
+        return f'{self.user.name} Image'
+    
+    def get_absolute_url(self):
+        return f"/Image/{self.id}"
 
     class Meta:
-        ordering = ["-pk"]
+       ordering = ["-pk"]
 
-
-class Follow(models.Model):
-    follower = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='following')
-    followed = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='followers')
+class Comments(models.Model):
+    comment = models.TextField()
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
+    
+      
+   
 
     def __str__(self):
-        return f'{self.follower} Follow'
+        return f'{self.user.name} Image'
+
+class Likes(models.Model):
+    likes = models.IntegerField()
+    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='likes')
+ 
+      
+   
+
+    def __str__(self):
+        return f'{self.user.name} Image'
+
+class Follow(models.Model):
+    following = models.ForeignKey(User, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.following
+
+class Followers(models.Model):
+    followers = models.ForeignKey(User, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.followers

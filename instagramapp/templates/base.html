@@ -1,26 +1,56 @@
 {% load bootstrap3 %}
 {% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {%if title%}
 
-  {% block styles %}
+    <title>{{title}}</title>
+  
+    {%endif%}
+    <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Pacifico&family=Poppins:wght@100&display=swap" rel="stylesheet">
+    {% block styles %}
     {% bootstrap_css %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
     {% endblock %}
-
+    
 </head>
 <body>
-    {% include "navbar.html" %}
-    {% block content %} 
-     {%endblock%}
-    {% block scripts %}
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-     {% bootstrap_javascript %}
-    {% endblock %}
+    <div class="container">
+        <!-- <div class="image_holder">
+            <img class="image1" src={% static "instagram.png" %}>
+            <img class="image2"  src={% static "instagram.png" %}>
+        </div> -->
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" style="color:black;font-size:25px; font-family: 'Pacifico', cursive;">Instagram</h5>
+
+                <div>
+                    <a class='btn btn-primary' href="/accounts/login">Login</a>
+                </div>
+                <h5>Don't have an account?<span><a href="/accounts/register">Register</a></span></h5>
+            </div>
+          </div>
+        </div>
+  
+    <div class="col-md-4"></div>
+</div>
+       
+        
+
+
+
+
+
+  
+    {% include 'footer.html' %}
+</div>
 </body>
 </html>

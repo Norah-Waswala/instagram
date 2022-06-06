@@ -1,50 +1,53 @@
+{% load bootstrap3 %}
+{% load static%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block styles %}
+  {% bootstrap_css %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Pacifico&family=Poppins:wght@100&display=swap" rel="stylesheet">
+{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">instagram</a>
+<nav class="navbar" style="height:100px; ">
+  <div class=" container-fluid">
+    <div class="navbar-header" style="margin-top:20px;font-family: 'Pacifico', cursive;">
+      <div style="display:flex; flex-direction:row; position:absolute; top:50%; left:25%;">
+          <a class="navbar-brand" style="color:black;font-size:25px; margin-right:20px;" href="">Instagram</a>
+        <!-- Adding a search form  -->
+        <form class="navbar-form" role="search" action="{% url 'search' %}" style:"margin-right:50px;" >
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="user">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
           </div>
+        </form>
+
+        <!-- search form end -->
+        <div class="icons">
+        <a href="" style="margin-right:20px;text-decoration:none;"><span class="iconify" data-icon="ci:home-alt-fill" data-width="20"></span></a>
+        <a href="" style="margin-right:20px;text-decoration:none;"><span class="iconify" data-icon="cil:paper-plane" data-width="20"></span></a>
+        <a href="" style="margin-right:20px;"><span class="iconify" data-icon="bi:plus-square" data-width="20"></span></a>
+        <a href="" style="margin-right:20px;"><span class="iconify" data-icon="ant-design:compass" data-width="20"></span></a>
+        <a href="" style="margin-right:20px;"><span class="iconify" data-icon="icon-park-outline:like" data-width="20"></span></a>
+        <a href="" style="margin-right:20px;"><span class="iconify" data-icon="healthicons:ui-user-profile" data-width="20"></span></a>
+      </div>
+      </div>
       
-          <!-- Collect the nav links, forms, and other content for toggling -->
-        
-            <form class="navbar-form navbar-left">
-              <div class="form-group">
-                <div class="search-container">
-                    <form action="/search">
-              
-                      <input type="text" placeholder="Search.." name="imagesearch">
-                      <button type="submit"><i class="fa fa-search"></i></button>
-                    </form>
-                  </div>
-               
-            </div>
-             
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-                <div class="icon">
-                <i class="fa fa-paper-plane-top"></i>
-                <i class="fa fa-square-plus"></i>
-                <i class="fa fa-compass"></i>
-                <i class="fa fa-heart"></i>
-            </div>
-            </ul>
-          </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-      </nav>
+    </div>    
+   
+  </div>
+</nav>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+<script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
 </body>
 </html>
