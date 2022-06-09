@@ -29,14 +29,14 @@
         </form>
 
         <!-- search form end -->
-        <div class="icons">
+        <div class="icons" style="margin-right:20px;">
         <a href="" style="margin-right:20px;text-decoration:none;"><span class="iconify" data-icon="ci:home-alt-fill" data-width="20"></span></a>
         <a href="" style="margin-right:20px;text-decoration:none;"><span class="iconify" data-icon="cil:paper-plane" data-width="20"></span></a>
-        <a href="{url 'createImage'" style="margin-right:20px;"><span class="iconify" data-icon="bi:plus-square" data-width="20"></span></a>
+        <a href="{% url 'createImage' %}" style="margin-right:20px;"><span class="iconify" data-icon="bi:plus-square" data-width="20"></span></a>
         <a href="" style="margin-right:20px;"><span class="iconify" data-icon="ant-design:compass" data-width="20"></span></a>
         <a href="" style="margin-right:20px;"><span class="iconify" data-icon="icon-park-outline:like" data-width="20"></span></a>
         <a href="" style="margin-right:20px;"><span class="iconify" data-icon="healthicons:ui-user-profile" data-width="20"></span></a>
-        {% if user.is_authenticated %}
+        <!-- {% if user.is_authenticated %}
         <ul>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle btn btn-default" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -59,7 +59,7 @@
             </ul>
           </li>
         </ul>
-        {% endif %}
+        {% endif %} -->
       </div>
       </div>
       

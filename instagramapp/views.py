@@ -39,28 +39,43 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request=request, template_name="registration/login.html", context={"login_form":form})
 
+@login_required(login_url='/login')
+def index(request):
+    current_user = request.user
+    form_one=PostForm
+    # form_two = CommentsForm
+    images = Post.objects.all()
+    users = User.objects.all()
+    # likes = User_likes.objects.all()
+    # comments= User_comment.objects.all()
+    profiles = Profile.objects.all()
+    
+    
+    return render(request, 'index.html', {'form_one':form_one, 'images':images, 'users':users, 'profiles':profiles, 'users':users})
+
 
     
-@login_required(login_url='login')
-def index(request):
-    post = Post.objects.all()
-    users = User.objects.exclude(id=request.user.id)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user.profile
-            post.save()
-            return HttpResponseRedirect(request.path_info)
-    else:
-        form = PostForm()
-    params = {
-        'post': post,
-        'form': form,
-        'users': users,
+# @login_required(login_url='login')
+# def index(request):
+#     images = Post.objects.all()
+#     users = User.objects.exclude(id=request.user.id)
+#     if request.method == 'POST':
+#         form = PostForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             images = form.save(commit=False)
+#             images.user = request.user.profile
+#             images.save()
+#             return HttpResponseRedirect(request.path_info)
+#     else:
+#         form = PostForm()
+#     params = {
+#         'post': images,
+#         'form': form,
+#         'users': users,
 
-    }
-    return render(request, 'index.html',params)
+#     }
+#     return render(request, 'index.html',params)
+    
 # def index(request):
 #     '''
 #     Function that renders the index page(timeline)
@@ -68,7 +83,7 @@ def index(request):
 #     Images = Image.objects.all()
 #     comments = Comments.objects.all()
   
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def search_profile(request):
     if 'search_user' in request.GET and request.GET['search_user']:
         name = request.GET.get("search_user")
@@ -85,31 +100,18 @@ def search_profile(request):
     return render(request, 'search.html', {'message': message})
 @login_required(login_url='/accounts/login/')
 def createImage(request):
-    
-    createImage = PostForm()
-    
-    if request.method=='Image':
-        form = authform(request.Image)
+    current_user = request.user
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            print('valid')
-            name = form.cleaned_data['your_name']
-            email = form.cleaned_data['email']
-            user = User(name = name,email = email)
-            user.save()
-            send_welcome_email(name,email)
-            
-            
-        else:
-            form=authform()
-            
-        createImage = PostForm(request.Image,request.Files)
-        if createImage.is_valid():
-            createImage.save()
-            return redirect('index')
-        else:
-            return HttpResponse('Your form is incorrect')
-    else: render(request, 'upload.html', {'createImage':createImage, 'authform':form})
-    
+            post = form.save(commit=False)
+            post.user = current_user
+            post.save()
+        return redirect('home')
+
+    else:
+        form =  PostForm()
+    return render(request, 'post.html', {"form": form})
  
 @login_required(login_url='/accounts/login/')   
 def update_Image(request, Image_id):

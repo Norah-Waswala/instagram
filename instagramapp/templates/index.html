@@ -1,18 +1,177 @@
-{% extends "all.html" %}
+{% extends 'all.html'%}
 {% load bootstrap3 %}
-{% load static %}
+
 {% block content %}
-{% for post in post %}
 
-<div class="card mb-4">
-    
-    <div class="card-body mb-4">
-        <img src="{{post.image.url}}" alt="">
-        </div></a>
+<div class="container-fluid mt-2" id="welcome">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLabel">Create a new post </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{%url 'createImage'%}" method="post" enctype="multipart/form-data">
+            {%csrf_token%}
+            {% for field in form %}
+            {% bootstrap_field field %}
+            {% endfor %}
+           
+            <input type="submit" class="btn btn-primary btn-sm" value="Create Post">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="row">
+  </div>
+
+  <!-- main Page content -->
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-4">
+      <!-- Button trigger modal -->
+      {% for image in images %}
+      
+     
+      <div class="card mb-4" id="center">
+        <div class="card-header">
+          {% if request.user.profile.image %}
+          <img src="{{request.user.profile.profile_picture.url}}" width="40px" height="40px" class=" rounded-circle" alt="" style="cursor: pointer;">
+          {% else %}
+          <img src="{{ profile.profile_picture}}" width="40px" height="40px"
+            class=" rounded-circle" alt="" style="cursor: pointer;">
+          {% endif %}
+          <small class="m-1">{{request.user.username}}</small>
+        </div>
+        <a href="{{ image.id }}" data-toggle="modal" data-target="#exampleModal{{image.id}}"
+          data-target="#staticBackdrop">
+          <div class="card" id="card-outline">
+            <img src="{{image.image.url}}" alt="Image" id="user-user">
+        
+          </div>
+        </a>
+        <section>
+          <a href="" style="margin-right:20px;text-decoration:none;"><span class="iconify" data-icon="cil:paper-plane" data-width="20"></span></a>
+          <i class="fa-regular fa-heart m-2 icons text-danger"></i>
+          <i class="fa-regular fa-comments m-2 icons text-primary"></i>
+          <i class="fa-solid fa-paper-plane m-2 icons text-primary"></i>
+          
+          <span class="float-md-right icons">
+            <i class="fa-regular fa-bookmark m-2 icons"></i>
+          </span>
+          <br>
+
+          <small class="m-2">Posted:{{image.date_posted|timesince}}</small>
+        </section>
+        <div class="card-footer">
+          {% for comment in comments %}
+          <small>comment {{comment.user}}: {{comment.content}}</small>
+          <br>
+          <small>{{comment.commented_at | timesince}}</small>
+          <hr>
+          {% endfor %}
+        </div>
+      </div>
+     
+      {%endfor%}
+      {% for image in images %}
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{image.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content" id="body">
+
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">{{image.image_name}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <img src="{{image.image.url}}" alt="user Image" class="image-user">
+                </div>
+                <div class="col-md-6">
+                  {% if request.user.profile.image %}
+                  <img src="{{request.user.profile.image.url}}" class="rounded-circle" alt=""
+                    style="height:75px; width:75px;">
+                  {% else %}
+                  <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"
+                    class="rounded-circle" alt="" style="height:50px; width:50px;">
+                  {% endif %}
+
+                  <span id="name">{{user.username}}</span>
+                  <p id="caption">{{image.image_caption}}</p>
+                  <p id="date">Edited:{{image.date_posted}}</p>
+                  <hr>
+                  {% for comment in comments %}
+                  <small>{{comment.user}}:
+                    {{comment.content}}</small>
+                  <small>{{comment.commented_at | timesince}}</small>
+                  <hr>
+                  {% endfor %}
+                  <section id="comments-section">
+                    <a href="post/{{image.id}}/like"><i
+                        class="fa-solid fa-heart text-danger"></i></a>Likes:{{image.likes_count.count}}
+                    <a href="comment/{{image.id}}/comment"><i class="fa-solid fa-comments text-info "></i>Comment</a>
+
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      <!-- </div> -->
+    </div>
+    <div class="col-md-4 position-fixed offset-6">
+      <div class="me">
+        <a href="{% url 'profile' %}"><div class="d-flex">
+          {% if request.user.profile.image %}
+          <img src="{{request.user.profile.image.url}}" width="60px" height="60px" class=" rounded-circle mt-2" alt="">
+          {% else %}
+          <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png"  style width="60px" height="60px" class=" rounded-circle" alt="">
+          {% endif %}
+          <span class="m-4">{{request.user.username}} </span>
+          <div class="mt-4 ml-auto follow">
+              <a href="" id="switch">Switch</a>
+          </div>
+      </div></a>
+
+      </div>
+      <h6>suggestions for you</h6>
+      {% for user in users %}
+      <div class="row my-3">
+        <div class="col-md-6">
+          {% if user.profile.image %}
+          <img src="{{user.profile.image.url}}" width="40px" height="40px" class=" rounded-circle" alt="">
+          {% else %}
+          <img src="https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png" width="40px" height="40px"
+            class=" rounded-circle" alt="">
+          {% endif %}
+          <a href=""><span class="m-1">{{user.username}}</span></a>
+        </div>
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary btn-sm float-md-right" id="follo-people">Follow</button>
+        </div>
+      </div>
+      {% endfor %}
 
 
+    </div>
+  </div>
 
-{%endfor%}
-
-{% endblock %}
+{%endblock%}
