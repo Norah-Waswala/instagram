@@ -1,6 +1,37 @@
+#login{
+    height: 400px;
+}
+/* #footer li{
+    font-size: xx-small;
+} */
+
+@media only screen and (max-width: 475px){
+    .download{
+        width:45%;
+        display:flex;
+        flex-direction:row;
+        display:inline;
+    }
+    #insta{
+        height:60%;
+    }
+
+}
+
+.navbar{
+    background: #f1f1f1;
+}
 .icons a{
     color: black;
 }
 .navbar-form input{
     background-color: rgba(196, 194, 194, 0.712);
+}
+.btn a{
+    color: black;
+    size: 30px;
+}
+.card-body img{
+    width: 200px;
+    height: 200px;
 }

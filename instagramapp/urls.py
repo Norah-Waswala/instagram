@@ -5,14 +5,14 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^$',views.index,name = 'index'),
-     url(r'^search/', views.search_profile, name='search'),
-    # path(r'', views.main, name = 'mainpage'),
-    # path(r'index/', views.index, name = 'indexpage'),
-    # path('createImage/',views.createImage, name='createImage'),
+    url(r'^$', views.login_request, name="login"),
+    url(r'^register/', views.register_request, name="register"),
+    url(r'^index/',views.index,name = 'index'),
+    url(r'^search/', views.search_profile, name='search'),
+    url(r'^createImage/',views.createImage, name='createImage'),
     # path('update/<int:Image_id>',views.update_Image, name='updateImage'),
     # path('delete/<int:Image_id>',views.delete_Image, name='deleteImage'),
-    # path('profile/', views.Profile, name='profile')
+    url(r'^profile/', views.showprofile, name='profile')
 
 ]
     

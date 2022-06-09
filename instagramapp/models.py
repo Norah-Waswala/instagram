@@ -2,10 +2,10 @@ from distutils.command.upload import upload
 from tkinter import CASCADE, image_names
 from django.db import models
 from django.urls import reverse
-
+from django.utils import timezone
 from django.contrib.auth.models import User
 
-# from django.db.models.signals import Image_save
+
 from django.dispatch import receiver
 # Create your models here.
 
@@ -14,17 +14,8 @@ class Profile(models.Model):
     profile_picture = models.ImageField(upload_to='images/', default='default.png')
     bio = models.TextField(max_length=500, default="My Bio", blank=True)
 
-    def __str__(self):
-        return f'{self.user.name} Profile'
+   
 
-    # @receiver(Image_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
-
-    # @receiver(Image_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
 
     def save_profile(self):
         self.user
@@ -33,17 +24,17 @@ class Profile(models.Model):
         self.delete()
 
     @classmethod
-    def search_profile(cls, name):
-        return cls.objects.filter(user__username__icontains=name).all()
+    def search_profile(cls, user):
+        return cls.objects.filter(user__username__icontains=user).all()
 
-class Image(models.Model):
+class Post(models.Model):
     image=models.ImageField(upload_to='images/')
     image_name=models.CharField(max_length=60, blank=True)
     image_caption=models.CharField(max_length=60, blank=True)
     image_likes = models.ManyToManyField(User, related_name='likes', blank=True, )
     image_comments = models.ManyToManyField(User, related_name='comments', blank=True, )
     profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='images')
-   
+    date_posted = models.DateTimeField(default=timezone.now)
     
     @property
     def get_all_comments(self):
@@ -58,8 +49,7 @@ class Image(models.Model):
     def total_likes(self):
         return self.likes.count()
 
-    def __str__(self):
-        return f'{self.user.name} Image'
+    
     
     def get_absolute_url(self):
         return f"/Image/{self.id}"
@@ -69,18 +59,18 @@ class Image(models.Model):
 
 class Comments(models.Model):
     comment = models.TextField()
-    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='comments')
+    image = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='comments')
     
       
    
 
     def __str__(self):
-        return f'{self.user.name} Image'
+        return f'{self.user} Image'
 
 class Likes(models.Model):
     likes = models.IntegerField()
-    image = models.ForeignKey(Image, on_delete=models.CASCADE, related_name='likes')
+    image = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
     user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='likes')
  
       
