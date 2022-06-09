@@ -1,0 +1,47 @@
+{% extends "registration/basereg.html" %}
+
+{% block content %} 
+
+{% load crispy_forms_tags %}         
+
+<!--Register-->
+<div class="container py-5">
+<div class="row">
+	<div class="col-md-4"></div>
+	<div class="col-md-4">
+        <div id="login" class="panel-group" style="margin-top: 30px;">
+			<div class="panel panel-default">
+			  <div  class="panel-body" style="text-align: center; height: 500px; font-size: x-small;">
+			
+				<h1 style="font-size: large;">Instagram</h1>
+				<p>sign up to see photos and videos from your friends</p>
+				<p style="color: rgba(24, 71, 141, 0.753);">log in with facebook</p>
+				<p>or</p>
+				<form method="POST">
+					{% csrf_token %}
+					{{ register_form|crispy }}                    
+					<button class="btn btn-primary" type="submit">Sign Up</button>
+				</form>
+			
+			</div>
+		  </div>
+			<div class="panel panel-default" style="margin-bottom: 30px;">
+			  <div class="panel-body">
+				<p class="text-center">Have an account? <a href="/login">log In</a></p>
+			  </div>
+			
+			</div>
+		  </div>
+		</div>
+		
+	  
+	
+	<div class="col-md-4"></div>
+</div>
+
+	
+</div>
+
+
+
+{% endblock %}
