@@ -1,0 +1,59 @@
+{% extends 'all.html' %}
+{% load bootstrap3 %}
+{% block content %}
+{{block.super}}
+
+<div class="container-fluid">
+    <div class="row jumbotron text-center">
+        <div class="col-md-4 col-sm-2">
+            {% if user.profile.profile_pic.url %}
+
+                <span style="border-radius:50%;"><img src="{{user.profile.profile_picture.url}}" alt="Image" width="100" height="100"></span>
+                {% else %}
+                <form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+    
+                    {% bootstrap_form details_form layout='inline'%}
+                    <input type="submit" class="btn-sm btn-outline-primary" value="Add Profile">
+    
+                </form>
+                {% endif %}
+                <div style="margin-top:30px;">
+                    <p>{{user.profile.bio}}</p>
+                </div>
+                <h4 style="margin-top:40px;">Account: {{user.username}}</h4>
+                <button type="button" class="btn-sm btn-primary">FOLLOW</button>
+            
+
+        </div>
+
+        <div class="col-md-2 col-sm-2">
+            <h4 style="margin-right:20px;">Followers</h4>
+            <p>{{followercount}}</p>
+        </div>
+        <div class=" col-md-2 col-sm-2">
+            <h4>Following</h4>
+            <p>{{followingcount}}</p>
+        </div>
+
+    </div>
+</div>
+    <div class="container">
+         <div style="width:100%;background:grey; height:70px;">
+            <ul style="list-style: none; width:100%; display:flex; flex-direction:row; justify-content:center;padding-top:17px; font-family:sans serif;font-weight:bold;">
+                <li style="margin-right:50px; text-align:center;">
+                    <a style="color:white;" href="{%url 'index' %}">Home</a>
+                </li>
+                <li style="margin-right:50px; text-align:center;">
+                    <a style="color:white;" href="{%url 'index' %}">Posts</a>
+                </li>
+                <li style="text-align:center;">
+                    <a style="color:white;" href="{%url 'index' %}">Update Profile</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+{% endblock %}
