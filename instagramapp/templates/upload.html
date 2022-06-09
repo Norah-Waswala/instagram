@@ -1,0 +1,24 @@
+{% load bootstrap3 %}
+
+{% block content %}
+<div class='container'>
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{%url 'profile' %}" method="post" enctype="multipart/form-data">
+                
+                {% csrf_token %}
+                {% bootstrap_form form layout='inline'%}
+                <input type="submit" class="btn-sm btn-outline-info" value="New Post">
+            </form>
+        </div>
+    </div>
+    {% for post in posts %}
+        {% if user.profile.id == post.profile.id %}
+        <div>
+            <img src="{{post.pic.url}}" alt="Image" class="img-fluid">
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{%endblock%}
